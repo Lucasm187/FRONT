@@ -13,6 +13,8 @@ function Admin() {
     price: ''
   });
 
+  const [categoryName, setCategoryName] = useState('');
+  const [publisherName, setPublisherName] = useState('');
   
   useEffect(() => {
     fetchBooks();
@@ -104,10 +106,44 @@ function Admin() {
     });
   };
 
+  const handleAddCategory = () => {
+    if (!categoryName) {
+      alert('Por favor, insira o nome da categoria.');
+      return;
+    }
+
+    api.post('/api/categories', { name: categoryName })
+      .then(() => {
+        alert('Categoria adicionada com sucesso!');
+        setCategoryName('');
+      })
+      .catch((error) => {
+        console.error('Erro ao adicionar categoria:', error.response?.data || error.message);
+        alert('Erro ao adicionar categoria.');
+      });
+  };
+
+  const handleAddPublisher = () => {
+    if (!publisherName) {
+      alert('Por favor, insira o nome da editora.');
+      return;
+    }
+
+    api.post('/api/publishers', { name: publisherName })
+      .then(() => {
+        alert('Editora adicionada com sucesso!');
+        setPublisherName('');
+      })
+      .catch((error) => {
+        console.error('Erro ao adicionar editora:', error.response?.data || error.message);
+        alert('Erro ao adicionar editora.');
+      });
+  };
+
   return (
     <div className="container mt-5">
       <h1 className="text-center mb-4">Painel Administrativo</h1>
-
+  
       {/* Formulário para adicionar/editar livros */}
       <div className="card mb-4">
         <div className="card-body">
@@ -192,7 +228,45 @@ function Admin() {
           )}
         </div>
       </div>
-
+  
+      {/* Formulário para Adicionar Categoria */}
+      <div className="card mb-4">
+        <div className="card-body">
+          <h2>Adicionar Categoria</h2>
+          <div className="form-group">
+            <label>Nome da Categoria</label>
+            <input
+              type="text"
+              className="form-control"
+              value={categoryName}
+              onChange={(e) => setCategoryName(e.target.value)}
+            />
+          </div>
+          <button className="btn btn-success mt-3" onClick={handleAddCategory}>
+            Adicionar Categoria
+          </button>
+        </div>
+      </div>
+  
+      {/* Formulário para Adicionar Editora */}
+      <div className="card mb-4">
+        <div className="card-body">
+          <h2>Adicionar Editora</h2>
+          <div className="form-group">
+            <label>Nome da Editora</label>
+            <input
+              type="text"
+              className="form-control"
+              value={publisherName}
+              onChange={(e) => setPublisherName(e.target.value)}
+            />
+          </div>
+          <button className="btn btn-success mt-3" onClick={handleAddPublisher}>
+            Adicionar Editora
+          </button>
+        </div>
+      </div>
+  
       {/* Lista de livros */}
       <h2>Livros Cadastrados</h2>
       <ul className="list-group">
@@ -220,6 +294,7 @@ function Admin() {
       </ul>
     </div>
   );
+  
 }
 
 export default Admin;
