@@ -14,14 +14,14 @@ function Cart() {
     }
 
     const purchaseData = {
-      books: cart.map((book) => ({ id: book.id })), // Apenas os IDs dos livros
-      total: cart.reduce((total, item) => total + item.price, 0), // Calcula o total
+      books: cart.map((book) => ({ id: book.id })), 
+      total: cart.reduce((total, item) => total + item.price, 0),
     };
 
     api.post(`/api/purchases/${user.id}`, purchaseData)
       .then(() => {
         alert('Compra finalizada com sucesso!');
-        clearCart(); // Limpa o carrinho
+        clearCart();
       })
       .catch((error) => {
         console.error('Erro ao finalizar compra:', error);
